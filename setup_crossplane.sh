@@ -34,6 +34,9 @@ generic aws-secret \
 -n crossplane-system \
 --from-file=creds=./aws-credentials.txt
 
+# Check the secret
+kubectl describe secret
+
 # Create a ProviderConfig 
 # A ProviderConfig customizes the settings of the AWS Provider.
 
