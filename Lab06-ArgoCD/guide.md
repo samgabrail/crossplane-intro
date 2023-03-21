@@ -91,3 +91,5 @@ You can try changing the EC2 instance tag in the `ec2.yaml` file from `environme
 ## Clean up
 
 In the ArgoCD dashboard you can click the 3 dots beside the app and click delete to delete the application. You will then need to confirm the deletion by typing the name of the application. This will destroy all the resources from AWS.
+
+> This is the end of the lab.

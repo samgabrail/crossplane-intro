@@ -9,8 +9,6 @@ spec:
     description: Allow TLS inbound traffic
     name: allow_ssh
     region: us-east-1
-    vpcIdRef:
-      name: development-vpc
     tags:
       Name: allow_ssh
   providerConfigRef:
@@ -39,7 +37,7 @@ spec:
 apiVersion: ec2.aws.upbound.io/v1beta1
 kind: SecurityGroupRule
 metadata:
-  name: test-vpc-securitygroup-egress
+  name: vpc-securitygroup-egress
 spec:
   deletionPolicy: Delete
   forProvider:
