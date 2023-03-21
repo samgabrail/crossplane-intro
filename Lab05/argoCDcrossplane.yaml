@@ -9,7 +9,7 @@ spec:
     server: 'https://kubernetes.default.svc'
   source:
     path: Lab03/schoolapp
-    repoURL: 'https://github.com/samgabrail/crossplane-intro'
+    repoURL: 'git@github.com:samgabrail/crossplane-intro.git'
     targetRevision: HEAD
   project: default
   syncPolicy:
