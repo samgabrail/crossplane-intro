@@ -1,0 +1,39 @@
+apiVersion: ec2.aws.upbound.io/v1beta1
+kind: Subnet
+metadata:
+  name: dev-subnet-1
+spec:
+  forProvider:
+    region: us-east-1
+    availabilityZone: us-east-1a
+    cidrBlock: 192.168.1.0/24
+    vpcIdRef:
+      name: development-vpc
+    tags:
+      Environment: development
+      Name: dev-subnet-1
+      Owner: Sam
+    mapPublicIpOnLaunch: true
+  providerConfigRef:
+    name: awsconfig
+
+---
+
+apiVersion: ec2.aws.upbound.io/v1beta1
+kind: Subnet
+metadata:
+  name: dev-subnet-2
+spec:
+  forProvider:
+    region: us-east-1
+    availabilityZone: us-east-1b
+    cidrBlock: 192.168.2.0/24
+    vpcIdRef:
+      name: development-vpc
+    tags:
+      Environment: development
+      Name: dev-subnet-2
+      Owner: Sam
+    mapPublicIpOnLaunch: true
+  providerConfigRef:
+    name: awsconfig

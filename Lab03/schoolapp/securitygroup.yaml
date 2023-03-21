@@ -1,0 +1,78 @@
+
+apiVersion: ec2.aws.upbound.io/v1beta1
+kind: SecurityGroup
+metadata:
+  labels:
+    selector: my-security-group
+  name: allow-ssh-example
+spec:
+  forProvider:
+    description: Allow TLS inbound traffic
+    name: allow_ssh
+    region: us-east-1
+    vpcIdRef:
+      name: development-vpc
+    tags:
+      Name: allow_ssh
+  providerConfigRef:
+    name: awsconfig
+---
+apiVersion: ec2.aws.upbound.io/v1beta1
+kind: SecurityGroupRule
+metadata:
+  name: ssh-vpc-securitygroup-ingress
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    cidrBlocks:
+      - 0.0.0.0/0
+    fromPort: 22
+    protocol: tcp
+    region: us-east-1
+    securityGroupIdSelector:
+      matchLabels:
+        selector: my-security-group
+    toPort: 22
+    type: ingress
+  providerConfigRef:
+    name: awsconfig
+---
+apiVersion: ec2.aws.upbound.io/v1beta1
+kind: SecurityGroupRule
+metadata:
+  name: http-vpc-securitygroup-ingress
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    cidrBlocks:
+      - 0.0.0.0/0
+    fromPort: 80
+    protocol: tcp
+    region: us-east-1
+    securityGroupIdSelector:
+      matchLabels:
+        selector: my-security-group
+    toPort: 80
+    type: ingress
+  providerConfigRef:
+    name: awsconfig
+---
+apiVersion: ec2.aws.upbound.io/v1beta1
+kind: SecurityGroupRule
+metadata:
+  name: test-vpc-securitygroup-egress
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    cidrBlocks:
+      - 0.0.0.0/0
+    fromPort: 0
+    protocol: all
+    region: us-east-1
+    securityGroupIdSelector:
+      matchLabels:
+        selector: my-security-group
+    toPort: 65536
+    type: egress
+  providerConfigRef:
+    name: awsconfig
