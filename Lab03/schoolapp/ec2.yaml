@@ -18,6 +18,7 @@ spec:
     tags:
       type: upbound-test-instance
       Name: tekanaid-sample-instance
+      environment: dev
   providerConfigRef:
     name: awsconfig
 ---
