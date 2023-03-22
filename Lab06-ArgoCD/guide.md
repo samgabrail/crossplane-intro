@@ -1,6 +1,6 @@
 # ArgoCD Setup
 
-In this lab we will get ArgoCD ready for crossplane.
+In this lab we will get ArgoCD ready for crossplane and use it to deploy our Web server with the necessary networking.
 
 ## Install ArgoCD
 
@@ -91,5 +91,7 @@ You can try changing the EC2 instance tag in the `ec2.yaml` file from `environme
 ## Clean up
 
 In the ArgoCD dashboard you can click the 3 dots beside the app and click delete to delete the application. You will then need to confirm the deletion by typing the name of the application. This will destroy all the resources from AWS.
+
+Congratulations! You have fully implemented a GitOps strategy using ArgoCD and Crossplane!
 
 > This is the end of the lab.
