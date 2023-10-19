@@ -1,0 +1,24 @@
+apiVersion: s3.aws.upbound.io/v1beta1
+kind: Bucket
+metadata: 
+  name: tekanaid-crossplane
+  labels:
+    testing.upbound.io/example-name: s3
+spec:
+  forProvider:
+    region: us-east-1
+    tags:
+      foo: bar
+---
+apiVersion: s3.aws.upbound.io/v1beta1
+kind: BucketOwnershipControls
+metadata:
+  name: tekanaid-crossplane
+spec:
+  forProvider:
+    bucketSelector:
+      matchLabels:
+        testing.upbound.io/example-name: s3
+    region: us-east-1
+    rule:
+      - objectOwnership: BucketOwnerPreferred
