@@ -1,8 +1,9 @@
-# crossplane-intro
+# Overview
 Intro to Crossplane
 
+## Instructions
 
-## Step 1: Install Crossplane
+### Step 1: Install Crossplane
 
 Let's use helm to install crossplane:
 
@@ -28,7 +29,7 @@ Look at the new API end-points with kubectl api-resources
 kubectl api-resources  | grep crossplane
 ```
 
-## Step 2: Create a Kubernetes secret for AWS 
+### Step 2: Create a Kubernetes secret for AWS 
 
 Rename the `aws-credentials-example.txt` file to `aws-credentials.txt` and add your AWS credentials to the file. Make sure you don't check this file into git.
 
@@ -48,7 +49,7 @@ kubectl describe secret aws-secret
 
 > Note that if your AWS creds change, you can delete this secret and recreate it after updating your `aws-credentials.txt` file. Make sure you don't check this file into git.
 
-## Step 3: Get the AWS provider and provider config ready
+### Step 3: Get the AWS provider and provider config ready
 
 Now let's configure the AWS provider and use the credentials we created.
 
@@ -58,61 +59,47 @@ kubectl apply -f provider.yaml
 
 You now have your Kubernetes cluster ready with crossplane installed.
 
-## Step 4: Define S3 Bucket Resource Class
-Create a file named s3bucketclass.yaml with the following content:
+### Step 4: Create the S3 Bucket
 
-```yaml
-apiVersion: aws.crossplane.io/v1beta1
-kind: BucketClass
-metadata:
-  name: s3bucket-standard
-spec:
-  deletionPolicy: Delete
-  providerConfigRef:
-    name: default
-  region: us-east-1
-  cannedACL: private
-  versioning:
-    status: Enabled
-```
 
 Apply the configuration:
 
 ```bash
-kubectl apply -f s3bucketclass.yaml
+kubectl apply -f s3bucket.yaml
 ```
 
-Step 5: Create a Resource Claim
-Create a file named bucketclaim.yaml with the following content:
-
-```yaml
-apiVersion: storage.crossplane.io/v1alpha1
-kind: Bucket
-metadata:
-  name: sample-bucket
-spec:
-  classSelector:
-    matchLabels:
-      tier: standard
-  writeConnectionSecretToRef:
-    name: bucketsecret
-```
-
-Apply the configuration:
-
-```bash
-kubectl apply -f bucketclaim.yaml
-```
-
-## Step 6: Verify Resource Status
+### Step 5: Verify Resource Status
 Check the status of the resource claim to ensure the S3 bucket has been successfully provisioned:
 
 ```bash
-kubectl get buckets.storage.crossplane.io sample-bucket -o wide
+kubectl get bucket
 ```
 
-Upon successful provisioning, you should see Bound under the STATUS column.
+Upon successful provisioning, you should see the following output:
 
-## Conclusion
+```
+NAME                  READY   SYNCED   EXTERNAL-NAME         AGE
+tekanaid-crossplane   True    True     tekanaid-crossplane   11m
+```
+
+### Step 6: Verify Drift Correction
+
+Now delete the bucket from the AWS console and wait some time for crossplane to recreate the bucket.
+
+Run the command below to see the status of the bucket:
+
+```bash
+kubectl describe bucket
+```
+
+### Step 7: Cleanup
+
+Now when ready to delete the bucket run the command below:
+
+```bash
+kubectl delete -f s3bucket.yaml
+```
+
+### Conclusion
 
 In this demo, we walked through the process of creating an AWS S3 bucket using Crossplane. This showcases how Crossplane facilitates cloud resource provisioning through a declarative API, abstracting the complexities of individual cloud providers and providing a unified, Kubernetes-native interface for cloud infrastructure management.
